@@ -28,10 +28,10 @@ RELAY_LIGHT = Pin(5, Pin.OUT)  # Controle do relé para luz ambiente
 ERROR_LED = Pin(19, Pin.OUT)
 
 # Controle de ventilador
-VENTILATOR = Pin(17, Pin.OUT)
+VENTILATOR = Pin(26, Pin.OUT)
 
 # Controle de espinter
-ESPINTER = Pin(16, Pin.OUT)
+ESPINTER = Pin(27, Pin.OUT)
 
 # Sensores de temperatura/umidade, umidade do solo e luz ambiente
 SENSOR_TEMPERATURY_HUMIDITY = dht.DHT11(Pin(15))
@@ -176,6 +176,7 @@ def POST_INFO(temperature, humidity, solid_humidity, pamp_status, light_status):
         ERROR_LED_ALERT(4)  
 
 conectar_wifi('SENAI_ACADEMICO', 'Senai*Academico')
+
 
 
 
