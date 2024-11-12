@@ -27,6 +27,12 @@ RELAY_LIGHT = Pin(5, Pin.OUT)  # Controle do relé para luz ambiente
 # Sensor de erro
 ERROR_LED = Pin(19, Pin.OUT)
 
+# Controle de ventilador
+VENTILATOR = Pin(17, Pin.OUT)
+
+# Controle de espinter
+ESPINTER = Pin(16, Pin.OUT)
+
 # Sensores de temperatura/umidade, umidade do solo e luz ambiente
 SENSOR_TEMPERATURY_HUMIDITY = dht.DHT11(Pin(15))
 SENSOR_SOLID_HUMIDITY = ADC(Pin(34)) 
@@ -127,6 +133,20 @@ def LIGHT_TRIGGER(light_value):
     else:
         RELAY_LIGHT.off()  
         return False
+
+def ESPINTER_TRIGGER(humidity):
+    if humidity > 35:  
+        ESPINTER.on()  
+        return True
+    else:
+        ESPINTER.off()
+
+def VENTILATOR_TRIGGER(temperature):
+    if temperature > 26:  
+        VENTILATOR.on()  
+        return True
+    else:
+        VENTILATOR.off()
 
 def POST_INFO(temperature, humidity, solid_humidity, pamp_status, light_status):
     current_time = time.localtime()
