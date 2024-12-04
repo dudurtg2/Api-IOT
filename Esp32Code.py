@@ -17,12 +17,12 @@ WIFI_LED_ON = Pin(23, Pin.OUT)
 WIFI_LED_OFF = Pin(22, Pin.OUT)
 
 # LEDs de status POST
-POST_SUCCESS = Pin(21, Pin.OUT)  
+POST_SUCCESS = Pin(22, Pin.OUT)  
 
 
 # Controle de bomba e relé
-PAMP = Pin(18, Pin.OUT) 
-RELAY_LIGHT = Pin(5, Pin.OUT)  # Controle do relé para luz ambiente
+PAMP = Pin(5, Pin.OUT) 
+RELAY_LIGHT = Pin(18, Pin.OUT)  # Controle do relé para luz ambiente
 
 # Sensor de erro
 ERROR_LED = Pin(19, Pin.OUT)
@@ -88,8 +88,11 @@ def conectar_wifi(ssid, senha):
             try:
                 pamp_status = PAMP_TRIGGER(solid_humidity)
                 light_status = LIGHT_TRIGGER(light_value)
+                humidity_status = ESPINTER_TRIGGER(umidade)
+                temp_status = VENTILATOR_TRIGGER(temperatura)
 
-                POST_INFO(temperatura, umidade, solid_humidity, pamp_status, light_status)
+
+                POST_INFO(temperatura, umidade, solid_humidity, pamp_status, light_status, humidity_status, temp_status)
                 print("Temperatura: {}°C, Umidade: {}%, Umidade do Solo: {}, Luminosidade: {}".format(
                     temperatura, umidade, solid_humidity, light_value))
             except Exception as e:
@@ -99,7 +102,7 @@ def conectar_wifi(ssid, senha):
             WIFI_LED_ON.off()
             WIFI_LED_OFF.on()
         
-        time.sleep(10)
+        time.sleep(2)
 
 def ERROR_LED_ALERT(count):
     
@@ -127,7 +130,7 @@ def PAMP_TRIGGER(solid_humidity):
         return False
 
 def LIGHT_TRIGGER(light_value):
-    if light_value > 22:  
+    if light_value > 35:  
         RELAY_LIGHT.on()  
         return True
     else:
@@ -135,11 +138,12 @@ def LIGHT_TRIGGER(light_value):
         return False
 
 def ESPINTER_TRIGGER(humidity):
-    if humidity > 35:  
+    if humidity < 35:  
         ESPINTER.on()  
         return True
     else:
         ESPINTER.off()
+        return False
 
 def VENTILATOR_TRIGGER(temperature):
     if temperature > 26:  
@@ -147,8 +151,9 @@ def VENTILATOR_TRIGGER(temperature):
         return True
     else:
         VENTILATOR.off()
+        return False
 
-def POST_INFO(temperature, humidity, solid_humidity, pamp_status, light_status):
+def POST_INFO(temperature, humidity, solid_humidity, pamp_status, light_status, humidity_status, temp_status):
     current_time = time.localtime()
    
     formatted_time = "{:04d}-{:02d}-{:02d}".format(
@@ -163,6 +168,8 @@ def POST_INFO(temperature, humidity, solid_humidity, pamp_status, light_status):
         "solidhumidity": solid_humidity,
         "lightStatus": light_status,
         "date": formatted_time,
+        "ventStatus": temp_status,
+        "humidityStatus": humidity_status
     }
 
     try:
@@ -176,6 +183,7 @@ def POST_INFO(temperature, humidity, solid_humidity, pamp_status, light_status):
         ERROR_LED_ALERT(4)  
 
 conectar_wifi('SENAI_ACADEMICO', 'Senai*Academico')
+
 
 
 

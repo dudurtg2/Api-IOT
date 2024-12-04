@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Objects;
 
 @Table(name = "monitor")
 @Entity
@@ -33,11 +34,18 @@ public class Monitor {
     @Column(name = "pampStatus")
     private boolean pampStatus;
 
+    @Column(name = "ventStatus")
+    private boolean ventStatus;
+
+    @Column(name = "humidityStatus")
+    private boolean humidityStatus;
+
+
 
     public Monitor() {
     }
 
-    public Monitor(int id, float temperature, float humidity, float solidhumidity, String date, boolean lightStatus, boolean pampStatus) {
+    public Monitor(int id, float temperature, float humidity, float solidhumidity, String date, boolean lightStatus, boolean pampStatus, boolean ventStatus, boolean humidityStatus) {
         this.id = id;
         this.temperature = temperature;
         this.humidity = humidity;
@@ -45,6 +53,8 @@ public class Monitor {
         this.date = date;
         this.lightStatus = lightStatus;
         this.pampStatus = pampStatus;
+        this.ventStatus = ventStatus;
+        this.humidityStatus = humidityStatus;
     }
 
     public int getId() {
@@ -87,12 +97,20 @@ public class Monitor {
         this.date = date;
     }
 
+    public boolean isLightStatus() {
+        return this.lightStatus;
+    }
+
     public boolean getLightStatus() {
         return this.lightStatus;
     }
 
     public void setLightStatus(boolean lightStatus) {
         this.lightStatus = lightStatus;
+    }
+
+    public boolean isPampStatus() {
+        return this.pampStatus;
     }
 
     public boolean getPampStatus() {
@@ -102,6 +120,32 @@ public class Monitor {
     public void setPampStatus(boolean pampStatus) {
         this.pampStatus = pampStatus;
     }
- 
+
+    public boolean isVentStatus() {
+        return this.ventStatus;
+    }
+
+    public boolean getVentStatus() {
+        return this.ventStatus;
+    }
+
+    public void setVentStatus(boolean ventStatus) {
+        this.ventStatus = ventStatus;
+    }
+
+    public boolean isHumidityStatus() {
+        return this.humidityStatus;
+    }
+
+    public boolean getHumidityStatus() {
+        return this.humidityStatus;
+    }
+
+    public void setHumidityStatus(boolean humidityStatus) {
+        this.humidityStatus = humidityStatus;
+    }
+
+    
+    
     
 }
